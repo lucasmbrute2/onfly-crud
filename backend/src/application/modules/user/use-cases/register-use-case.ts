@@ -2,6 +2,7 @@ import { UserRepository } from '@/src/application/repositories/user-repository'
 import { UserAlreadyExistsError } from '../errors/user-already-exists-error'
 import { User } from '../entity/user'
 import { Hasher } from '@/src/application/repositories/hash'
+import { inject, injectable } from 'tsyringe'
 
 export interface RegisterUseCaseProps {
   name: string
@@ -13,9 +14,12 @@ interface RegisterUseCaseResponse {
   user: User
 }
 
+@injectable()
 export class RegisterUseCase {
   constructor(
+    @inject('Hasher')
     private readonly hasher: Hasher,
+    @inject('UserRepository')
     private readonly userRepository: UserRepository,
   ) {}
 
