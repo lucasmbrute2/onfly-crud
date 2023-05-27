@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import { vi, expect, describe, it, beforeEach } from 'vitest'
 import { makeUserModel, makeHasherStub, makeUser } from '../tests/factories'
 import { RegisterUseCase } from './register-use-case'
