@@ -9,4 +9,4 @@ container.registerSingleton<UserRepository>(
   PrismaUserRepository,
 )
 
-container.registerSingleton<Hasher>('Hasher', BcryptAdapter)
+container.registerInstance<Hasher>('Hasher', new BcryptAdapter(6))

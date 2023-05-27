@@ -2,7 +2,9 @@ import { PrismaClient } from '@prisma/client'
 import { UserRepository } from '../user-repository'
 import { PrismaUserMapper } from './mappers/user-mapper'
 import { User } from '../../modules/user/entity/user'
+import { injectable } from 'tsyringe'
 
+@injectable()
 export class PrismaUserRepository implements UserRepository {
   private readonly prisma = new PrismaClient()
 

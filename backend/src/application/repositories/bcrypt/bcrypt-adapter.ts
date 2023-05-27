@@ -1,6 +1,8 @@
 import bcrypt from 'bcrypt'
 import { Hasher } from '../hash'
+import { injectable } from 'tsyringe'
 
+@injectable()
 export class BcryptAdapter implements Hasher {
   constructor(private readonly salt: number) {}
 
