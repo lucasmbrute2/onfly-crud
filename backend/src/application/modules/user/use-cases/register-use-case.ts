@@ -3,19 +3,14 @@ import { UserAlreadyExistsError } from '../errors/user-already-exists-error'
 import { User } from '../entity/user'
 import { Hasher } from '@/src/application/repositories/hash'
 import { inject, injectable } from 'tsyringe'
-
-export interface RegisterUseCaseProps {
-  name: string
-  username: string
-  password: string
-}
-
-interface RegisterUseCaseResponse {
-  user: User
-}
+import {
+  RegisterUseCaseProps,
+  RegisterUseCaseResponse,
+  RegisterUser,
+} from './protocols/register-user'
 
 @injectable()
-export class RegisterUseCase {
+export class RegisterUseCase implements RegisterUser {
   constructor(
     @inject('Hasher')
     private readonly hasher: Hasher,

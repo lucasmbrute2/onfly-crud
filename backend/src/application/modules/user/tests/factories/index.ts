@@ -1,6 +1,10 @@
 import { Hasher } from '@/src/application/repositories/hash'
 import { User, UserProps } from '../../entity/user'
-import { RegisterUseCaseProps } from '../../use-cases/register-use-case'
+import {
+  RegisterUseCaseProps,
+  RegisterUseCaseResponse,
+  RegisterUser,
+} from '../../use-cases/protocols'
 
 export const makeUserProps = (): UserProps => ({
   id: 'any-id',
@@ -34,4 +38,16 @@ export const makeHasherStub = (): Hasher => {
   }
 
   return new HasherStub()
+}
+
+export const makeRegisterUserUseCaseStub = (): RegisterUser => {
+  class RegisterUserUseCaseStub implements RegisterUser {
+    async execute(
+      user: RegisterUseCaseProps,
+    ): Promise<RegisterUseCaseResponse> {
+      return Promise.resolve(null)
+    }
+  }
+
+  return new RegisterUserUseCaseStub()
 }
