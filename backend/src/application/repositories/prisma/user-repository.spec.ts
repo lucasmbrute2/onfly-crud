@@ -1,3 +1,5 @@
+import 'reflect-metadata'
+
 import { PrismaClient } from '@prisma/client'
 import { execSync } from 'child_process'
 import { randomUUID } from 'node:crypto'
