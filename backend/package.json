@@ -1,0 +1,25 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:dev": "tsx watch ./src/main/server.ts",
+    "lint:all": "eslint src --ext .ts --fix",
+    "test:unit": "vitest"
+  },
+  "devDependencies": {
+    "@rocketseat/eslint-config": "^1.2.0",
+    "@types/express": "^4.17.17",
+    "@types/node": "^20.2.5",
+    "eslint": "^8.41.0",
+    "prisma": "^4.14.1",
+    "tsx": "^3.12.7",
+    "typescript": "^5.0.4",
+    "vite-tsconfig-paths": "^4.2.0",
+    "vitest": "^0.31.1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
