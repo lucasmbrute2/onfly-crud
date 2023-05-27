@@ -1,3 +1,4 @@
+'reflect-metadata'
 import { describe, expect, it } from 'vitest'
 import { User } from './user'
 import { makeUserProps } from '../tests/factories'

@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import bcrypt from 'bcrypt'
 import { describe, expect, it, vi } from 'vitest'
 import { BcryptAdapter } from './bcrypt-adapter'
