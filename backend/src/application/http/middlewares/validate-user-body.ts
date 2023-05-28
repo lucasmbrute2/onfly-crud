@@ -43,7 +43,7 @@ export function validateUserBody(
           return `O campo '${error.path}' é obrigatório`
         }
 
-        return error.code
+        return error.message
       })}`,
       400,
     )

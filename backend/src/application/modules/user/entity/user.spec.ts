@@ -12,7 +12,7 @@ const makeSut = (): SutTypes => ({
 })
 
 describe('User entity', () => {
-  it('shoud be able to instance User with correct values', () => {
+  it('Shoud be able to instance User with correct values', () => {
     const { sut } = makeSut()
 
     expect(sut).toBeInstanceOf(User)
