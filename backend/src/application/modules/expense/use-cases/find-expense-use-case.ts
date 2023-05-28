@@ -1,13 +1,16 @@
 import { ExpenseRepository } from '@/src/application/repositories/expense-repository'
 import { UserRepository } from '@/src/application/repositories/user-repository'
 import { NotFoundError } from '@/src/shared/errors/global-errors'
+import { Expense } from '../entity/expense'
 
 interface FindExpenseUseCaseProps {
   expenseId: string
   payerId: string
 }
 
-interface FindExpenseUseCaseResponse {}
+interface FindExpenseUseCaseResponse {
+  expense: Expense
+}
 
 export class FindExpenseUseCase {
   constructor(
@@ -24,5 +27,9 @@ export class FindExpenseUseCase {
 
     const expense = await this.expenseRepository.findById(expenseId)
     if (!expense) throw new NotFoundError('Expense not found')
+
+    return {
+      expense,
+    }
   }
 }
