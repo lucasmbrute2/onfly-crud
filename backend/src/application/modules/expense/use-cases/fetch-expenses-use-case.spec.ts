@@ -1,9 +1,10 @@
-import { beforeEach, describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { FetchExpensesUseCase } from './fetch-expenses-use-case'
 import { InMemoryUserRepository } from '@/src/application/repositories/in-memory/in-memory-user-repository'
 import { InMemoryExpenseRepository } from '@/src/application/repositories/in-memory/in-memory-expense-repository'
 import { makeExpense } from '../tests/factories'
 import { NotFoundError } from '@/src/shared/errors/global-errors'
+import { makeUser } from '../../user/tests/factories'
 
 let sut: FetchExpensesUseCase
 let inMemoryUserRepository: InMemoryUserRepository
@@ -23,5 +24,15 @@ describe('Fetch expenses', () => {
     expect(async () => {
       await sut.execute(makeExpense().payerId)
     }).rejects.toBeInstanceOf(NotFoundError)
+  })
+
+  it('Should call UserRepository with correct payerId', async () => {
+    const findByIdSpy = vi.spyOn(inMemoryUserRepository, 'findById')
+
+    const user = makeUser()
+    await inMemoryUserRepository.add(user)
+    await sut.execute(user.id)
+
+    expect(findByIdSpy).toHaveBeenCalledWith(user.id)
   })
 })
