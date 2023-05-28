@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import jwt from 'jsonwebtoken'
 import { describe, expect, test, vi } from 'vitest'
 import { JwtAdapter } from './jwt-adapter'
@@ -25,7 +26,10 @@ describe('Jwt Adapter', () => {
       const sut = makeSut()
       const signSpy = vi.spyOn(jwt, 'sign')
       await sut.encrypt('any_id')
-      expect(signSpy).toHaveBeenCalledWith({ id: 'any_id' }, 'secret')
+      expect(signSpy).toHaveBeenCalledWith({}, 'secret', {
+        expiresIn: '1h',
+        subject: JSON.stringify('any_id'),
+      })
     })
 
     test('Should return a token on sign success', async () => {
