@@ -1,5 +1,7 @@
 import { randomUUID } from 'crypto'
 import { InvalidCredentialsError } from '../../user/errors/invalid-credentials-error'
+import { InvalidCostError } from '../../user/errors/invalid-cost-error'
+import { AppError } from '@/src/shared/errors/global-errors'
 
 export interface ExpenseProps {
   id?: string
@@ -11,9 +13,12 @@ export interface ExpenseProps {
 
 export class Expense {
   private readonly MAX_CHAR_LENGTH = 191
+  private readonly MIN_COST = 1
 
   constructor(private props: ExpenseProps) {
     this.validateDescriptionSize()
+    this.validateCostValue()
+    this.preventFutureDates()
     this.props = {
       ...props,
       id: this.props.id ?? randomUUID(),
@@ -26,6 +31,18 @@ export class Expense {
       throw new InvalidCredentialsError(
         `Description should not be greater than ${this.MAX_CHAR_LENGTH} characters`,
       )
+    }
+  }
+
+  private validateCostValue() {
+    if (this.props.cost < this.MIN_COST) {
+      throw new InvalidCostError(`Min cost is ${this.MIN_COST}`)
+    }
+  }
+
+  private preventFutureDates() {
+    if (this.props.createdAt.getTime() > new Date().getTime()) {
+      throw new AppError('Invalid date', 400)
     }
   }
 
@@ -42,6 +59,7 @@ export class Expense {
   }
 
   set description(description: string) {
+    this.validateDescriptionSize()
     this.props.description = description
   }
 
@@ -50,6 +68,7 @@ export class Expense {
   }
 
   set createdAt(createdAt: Date) {
+    this.preventFutureDates()
     this.props.createdAt = createdAt
   }
 
@@ -58,6 +77,7 @@ export class Expense {
   }
 
   set cost(cost: number) {
+    this.validateCostValue()
     this.props.cost = cost
   }
 
