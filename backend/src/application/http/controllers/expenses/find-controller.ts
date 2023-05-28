@@ -3,7 +3,7 @@ import { container } from 'tsyringe'
 import { ExpenseView } from '../../views/expense-view'
 import { FindExpenseUseCase } from '@/src/application/modules/expense/use-cases/find-expense-use-case'
 
-export class FetchExpensesController {
+export class FindExpenseController {
   async handle(req: Request, res: Response) {
     const { expenseId } = req.params
     const payerId = req.payerId
