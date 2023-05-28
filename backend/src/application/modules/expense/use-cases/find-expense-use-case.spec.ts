@@ -43,10 +43,25 @@ describe('FindExpenseUseCase', () => {
     expect(findByIdSpy).toHaveBeenCalledWith(payerId)
   })
 
-  it('Should call UserRepository with correct payerId', () => {
+  it('Should throw NotFoundError if not find expense', () => {
     expect(async () => {
       const { payerId } = makeExpense()
       await sut.execute({ payerId, expenseId: 'wrong-id' })
     }).rejects.toBeInstanceOf(NotFoundError)
+  })
+
+  it('Should call ExpenseRepository with correct expenseId', async () => {
+    const findByIdSpy = vi.spyOn(inMemoryExpenseRepository, 'findById')
+    const user = makeUser()
+    await inMemoryUserRepository.add(user)
+
+    const expense = makeExpense({
+      payerId: user.id,
+    })
+    const { payerId, id } = expense
+    inMemoryExpenseRepository.add(expense)
+    await sut.execute({ payerId, expenseId: id })
+
+    expect(findByIdSpy).toHaveBeenCalledWith(expense.id)
   })
 })
