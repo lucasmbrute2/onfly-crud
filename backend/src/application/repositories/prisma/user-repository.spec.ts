@@ -8,8 +8,9 @@ import { PrismaUserMapper } from './mappers/user-mapper'
 import { makeUser } from '../../modules/user/tests/factories'
 import { PrismaUserRepository } from './prisma-user-repository'
 import { User } from '../../modules/user/entity/user'
+import { UserRepository } from '../user-repository'
 
-const makeSut = (): PrismaUserRepository => {
+const makeSut = (): UserRepository => {
   return new PrismaUserRepository()
 }
 
