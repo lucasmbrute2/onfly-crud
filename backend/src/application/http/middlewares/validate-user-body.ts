@@ -15,8 +15,14 @@ const registerBodySchema = z
     }
   })
 
+const authenticateBodySchema = z.object({
+  username: z.string().email(),
+  password: z.string().min(6),
+})
+
 const validationByRoutePaths = {
   '/': registerBodySchema,
+  '/auth': authenticateBodySchema,
 }
 
 type Paths = keyof typeof validationByRoutePaths
