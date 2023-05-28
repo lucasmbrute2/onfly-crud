@@ -6,7 +6,6 @@ import { FindExpenseUseCase } from './find-expense-use-case'
 import { makeExpense } from '../tests/factories'
 import { NotFoundError } from '@/src/shared/errors/global-errors'
 import { makeUser } from '../../user/tests/factories'
-import { response } from 'express'
 import { Expense } from '../entity/expense'
 
 let sut: FindExpenseUseCase
