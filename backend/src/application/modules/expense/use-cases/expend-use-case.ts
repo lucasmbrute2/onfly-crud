@@ -9,14 +9,33 @@ interface ExpendUseCaseProps {
   payerId: string
 }
 
+interface ExpendUseCaseResponse {
+  expense: Expense
+}
+
 export class ExpendUseCase {
   constructor(
     private readonly expenseRepository: ExpenseRepository,
     private readonly userRepository: UserRepository,
   ) {}
 
-  async execute({ cost, description, payerId }: ExpendUseCaseProps) {
+  async execute({
+    cost,
+    description,
+    payerId,
+  }: ExpendUseCaseProps): Promise<ExpendUseCaseResponse> {
     const hasValidPayer = await this.userRepository.findById(payerId)
     if (!hasValidPayer) throw new BadRequestError('Invalid payer')
+
+    const expense = new Expense({
+      cost,
+      description,
+      payerId,
+    })
+
+    await this.expenseRepository.add(expense)
+    return {
+      expense,
+    }
   }
 }
