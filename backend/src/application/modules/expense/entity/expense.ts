@@ -36,7 +36,9 @@ export class Expense {
 
   private validateCostValue() {
     if (this.props.cost < this.MIN_COST) {
-      throw new InvalidCostError(`Min cost is ${this.MIN_COST}`)
+      throw new InvalidCostError(
+        `You should pay something, min cost is ${this.MIN_COST}.`,
+      )
     }
   }
 

@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import { InMemoryUserRepository } from '@/src/application/repositories/in-memory/in-memory-user-repository'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { ExpendUseCase } from './expend-use-case'
