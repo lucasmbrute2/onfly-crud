@@ -25,4 +25,15 @@ export class PrismaExpenseRepository implements ExpenseRepository {
 
     return expenses.map(PrismaExpenseMapper.toDomain)
   }
+
+  async findById(id: string): Promise<Expense | null> {
+    const expense = await this.prisma.expense.findUnique({
+      where: {
+        id,
+      },
+    })
+
+    if (!expense) return null
+    return PrismaExpenseMapper.toDomain(expense)
+  }
 }

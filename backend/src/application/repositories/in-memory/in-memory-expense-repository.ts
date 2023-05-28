@@ -12,4 +12,10 @@ export class InMemoryExpenseRepository implements ExpenseRepository {
   async findMany(payerId: string): Promise<Expense[]> {
     return this.expenses.filter((expense) => expense.payerId === payerId)
   }
+
+  async findById(id: string): Promise<Expense | null> {
+    const expense = this.expenses.find((expense) => expense.id === id)
+    if (!expense) return null
+    return expense
+  }
 }
