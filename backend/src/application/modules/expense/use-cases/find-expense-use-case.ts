@@ -1,6 +1,6 @@
 import { ExpenseRepository } from '@/src/application/repositories/expense-repository'
 import { UserRepository } from '@/src/application/repositories/user-repository'
-import { NotFoundError } from '@/src/shared/errors/global-errors'
+import { Forbidden, NotFoundError } from '@/src/shared/errors/global-errors'
 import { Expense } from '../entity/expense'
 import { inject, injectable } from 'tsyringe'
 
@@ -31,6 +31,9 @@ export class FindExpenseUseCase {
 
     const expense = await this.expenseRepository.findById(expenseId)
     if (!expense) throw new NotFoundError('Expense not found')
+
+    if (expense.payerId !== payer.id)
+      throw new Forbidden('This user is not owner of this expense')
 
     return {
       expense,

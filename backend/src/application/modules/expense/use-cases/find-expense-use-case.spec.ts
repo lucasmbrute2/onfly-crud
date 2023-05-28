@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { InMemoryExpenseRepository } from '@/src/application/repositories/in-memory/in-memory-expense-repository'
 import { InMemoryUserRepository } from '@/src/application/repositories/in-memory/in-memory-user-repository'
