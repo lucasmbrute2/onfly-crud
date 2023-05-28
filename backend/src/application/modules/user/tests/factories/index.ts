@@ -5,6 +5,7 @@ import {
   RegisterUseCaseResponse,
   RegisterUser,
 } from '../../use-cases/protocols'
+import { Auth } from '@/src/application/repositories/auth'
 
 export const makeUserProps = (): UserProps => ({
   id: 'any-id',
@@ -38,6 +39,20 @@ export const makeHasherStub = (): Hasher => {
   }
 
   return new HasherStub()
+}
+
+export const makeAuthStub = (): Auth => {
+  class AuthStub implements Auth {
+    async encrypt(userId: string): Promise<string> {
+      return Promise.resolve(userId)
+    }
+
+    async decrypt(ciphertext: string): Promise<string> {
+      return Promise.resolve(ciphertext)
+    }
+  }
+
+  return new AuthStub()
 }
 
 export const makeRegisterUserUseCaseStub = (): RegisterUser => {

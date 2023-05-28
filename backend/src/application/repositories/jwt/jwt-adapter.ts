@@ -6,8 +6,11 @@ import { injectable } from 'tsyringe'
 export class JwtAdapter implements Auth {
   constructor(private readonly secret: string) {}
 
-  async encrypt(plaintext: string): Promise<string> {
-    return jwt.sign({ id: plaintext }, this.secret)
+  async encrypt(id: string): Promise<string> {
+    return jwt.sign({}, this.secret, {
+      expiresIn: '1h',
+      subject: JSON.stringify(id),
+    })
   }
 
   async decrypt(ciphertext: string): Promise<string> {
