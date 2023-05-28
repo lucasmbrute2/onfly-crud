@@ -1,12 +1,11 @@
 import { Auth } from '@/src/application/repositories/auth'
 import { UserRepository } from '@/src/application/repositories/user-repository'
-import { injectable } from 'tsyringe'
+import { inject, injectable } from 'tsyringe'
 import { User } from '../entity/user'
 import { Hasher } from '@/src/application/repositories/hash'
 import { InvalidCredentialsError } from '../errors/invalid-credentials-error'
 
 interface AuthUserUseCaseProps {
-  id: string
   username: string
   password: string
 }
@@ -19,8 +18,11 @@ interface AuthUserUseCaseResponse {
 @injectable()
 export class AuthUserUseCase {
   constructor(
+    @inject('Hasher')
     private readonly hashRepository: Hasher,
+    @inject('UserRepository')
     private readonly userRepository: UserRepository,
+    @inject('Auth')
     private readonly authRepository: Auth,
   ) {}
 
