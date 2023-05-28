@@ -9,7 +9,7 @@ export class JwtAdapter implements Auth {
   async encrypt(id: string): Promise<string> {
     return jwt.sign({}, this.secret, {
       expiresIn: '1h',
-      subject: JSON.stringify(id),
+      subject: id,
     })
   }
 

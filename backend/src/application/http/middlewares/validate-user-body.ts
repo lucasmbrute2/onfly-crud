@@ -40,7 +40,7 @@ export function validateUserBody(
     throw new AppError(
       `${validation.error.issues.map((error) => {
         if (error.code === 'invalid_type') {
-          return `O campo '${error.path}' é obrigatório`
+          return `Field '${error.path}' is required`
         }
 
         return error.message

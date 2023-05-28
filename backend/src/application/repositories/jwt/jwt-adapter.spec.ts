@@ -28,7 +28,7 @@ describe('Jwt Adapter', () => {
       await sut.encrypt('any_id')
       expect(signSpy).toHaveBeenCalledWith({}, 'secret', {
         expiresIn: '1h',
-        subject: JSON.stringify('any_id'),
+        subject: 'any_id',
       })
     })
 

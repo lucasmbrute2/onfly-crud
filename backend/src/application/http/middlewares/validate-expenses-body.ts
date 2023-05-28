@@ -9,7 +9,6 @@ const createBodySchema = z.object({
   cost: z.number().refine((cost) => cost > 0, {
     message: 'Mininum cost is 1.',
   }),
-  payerId: z.string(),
 })
 
 const validationByRoutePaths = {
