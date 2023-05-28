@@ -81,4 +81,22 @@ describe('ExpenseRepository', () => {
     expect(expenses).toHaveLength(1)
     expect(expenses[0]).toBeInstanceOf(Expense)
   })
+
+  // findById()
+  it('Should return an Expenses on success', async () => {
+    const sut = makeSut()
+    const user = makeUser()
+
+    await prisma.user.create({
+      data: PrismaUserMapper.toPrisma(user),
+    })
+
+    const expenseCreated = makeExpense({
+      payerId: user.id,
+    })
+    await sut.add(expenseCreated)
+    const expenseFromDb = await sut.findById(expenseCreated.id)
+
+    expect(expenseFromDb).toBeInstanceOf(Expense)
+  })
 })
