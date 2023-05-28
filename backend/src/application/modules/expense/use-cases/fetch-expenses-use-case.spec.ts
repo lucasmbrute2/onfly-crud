@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { FetchExpensesUseCase } from './fetch-expenses-use-case'
 import { InMemoryUserRepository } from '@/src/application/repositories/in-memory/in-memory-user-repository'
