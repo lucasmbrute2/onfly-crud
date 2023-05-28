@@ -2,6 +2,7 @@ import { ExpenseRepository } from '@/src/application/repositories/expense-reposi
 import { UserRepository } from '@/src/application/repositories/user-repository'
 import { BadRequestError } from '@/src/shared/errors/global-errors'
 import { Expense } from '../entity/expense'
+import { inject, injectable } from 'tsyringe'
 
 interface ExpendUseCaseProps {
   description: string
@@ -13,9 +14,12 @@ interface ExpendUseCaseResponse {
   expense: Expense
 }
 
+@injectable()
 export class ExpendUseCase {
   constructor(
+    @inject('ExpenseRepository')
     private readonly expenseRepository: ExpenseRepository,
+    @inject('UserRepository')
     private readonly userRepository: UserRepository,
   ) {}
 
