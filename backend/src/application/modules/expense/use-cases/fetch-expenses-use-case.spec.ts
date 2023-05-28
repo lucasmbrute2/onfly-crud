@@ -22,7 +22,7 @@ describe('Fetch expenses', () => {
 
   it('Should to throw if has not valid payer', () => {
     expect(async () => {
-      await sut.execute(makeExpense().payerId)
+      await sut.execute({ payerId: makeExpense().payerId })
     }).rejects.toBeInstanceOf(NotFoundError)
   })
 
@@ -31,7 +31,9 @@ describe('Fetch expenses', () => {
 
     const user = makeUser()
     await inMemoryUserRepository.add(user)
-    await sut.execute(user.id)
+    await sut.execute({
+      payerId: user.id,
+    })
 
     expect(findByIdSpy).toHaveBeenCalledWith(user.id)
   })
