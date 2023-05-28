@@ -21,5 +21,8 @@ export class FindExpenseUseCase {
   }: FindExpenseUseCaseProps): Promise<FindExpenseUseCaseResponse> {
     const payer = await this.userRepository.findById(payerId)
     if (!payer) throw new NotFoundError('Payer not found')
+
+    const expense = await this.expenseRepository.findById(expenseId)
+    if (!expense) throw new NotFoundError('Expense not found')
   }
 }
