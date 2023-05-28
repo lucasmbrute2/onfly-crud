@@ -4,7 +4,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { ExpendUseCase } from './expend-use-case'
 import { InMemoryExpenseRepository } from '@/src/application/repositories/in-memory/in-memory-expense-repository'
 import { makeExpense } from '../tests/factories'
-import { BadRequestError } from '@/src/shared/errors/global-errors'
+import { NotFoundError } from '@/src/shared/errors/global-errors'
 import { makeUser } from '../../user/tests/factories'
 import { Expense } from '../entity/expense'
 
@@ -34,7 +34,7 @@ describe('Expend Use Case ', () => {
     expect(async () => {
       const expense = makeExpense()
       await sut.execute(expense)
-    }).rejects.toBeInstanceOf(BadRequestError)
+    }).rejects.toBeInstanceOf(NotFoundError)
   })
 
   it('Should return an expense on success', async () => {
