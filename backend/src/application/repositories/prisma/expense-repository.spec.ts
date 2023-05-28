@@ -37,6 +37,7 @@ describe('ExpenseRepository', () => {
 
   beforeEach(async () => {
     await prisma.user.deleteMany({})
+    await prisma.expense.deleteMany({})
   })
 
   // add()
@@ -61,5 +62,23 @@ describe('ExpenseRepository', () => {
         createdAt: expense.createdAt,
       }),
     )
+  })
+
+  // findMany()
+  it('Should return an array of Expenses on success', async () => {
+    const sut = makeSut()
+    const user = makeUser()
+
+    await prisma.user.create({
+      data: PrismaUserMapper.toPrisma(user),
+    })
+    await sut.add(
+      makeExpense({
+        payerId: user.id,
+      }),
+    )
+    const expenses = await sut.findMany(user.id)
+    expect(expenses).toHaveLength(1)
+    expect(expenses[0]).toBeInstanceOf(Expense)
   })
 })
