@@ -2,6 +2,7 @@ import { ExpenseRepository } from '@/src/application/repositories/expense-reposi
 import { Expense } from '../entity/expense'
 import { UserRepository } from '@/src/application/repositories/user-repository'
 import { NotFoundError } from '@/src/shared/errors/global-errors'
+import { inject, injectable } from 'tsyringe'
 
 interface FetchExpensesUseCaseProps {
   payerId: string
@@ -11,9 +12,12 @@ interface FetchExpensesUseCaseResponse {
   expenses: Expense[]
 }
 
+@injectable()
 export class FetchExpensesUseCase {
   constructor(
+    @inject('ExpenseRepository')
     private readonly expenseRepository: ExpenseRepository,
+    @inject('UserRepository')
     private readonly userRepository: UserRepository,
   ) {}
 
