@@ -38,7 +38,13 @@ export function validateUserBody(
 
   if (validation.success === false) {
     throw new AppError(
-      `Invalid body: ${JSON.stringify(validation.error.format())}`,
+      `${validation.error.issues.map((error) => {
+        if (error.code === 'invalid_type') {
+          return `O campo '${error.path}' é obrigatório`
+        }
+
+        return error.code
+      })}`,
       400,
     )
   }
