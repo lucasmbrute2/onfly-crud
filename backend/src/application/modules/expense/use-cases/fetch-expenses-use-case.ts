@@ -7,7 +7,7 @@ interface FetchExpensesUseCaseProps {
   payerId: string
 }
 
-interface FetchExpensesUseCaseProps {
+interface FetchExpensesUseCaseResponse {
   expenses: Expense[]
 }
 
@@ -15,10 +15,17 @@ export class FetchExpensesUseCase {
   constructor(
     private readonly expenseRepository: ExpenseRepository,
     private readonly userRepository: UserRepository,
-  ): Promise<FetchExpensesUseCaseProps> {}
+  ) {}
 
-  async execute(payerId: string) {
+  async execute({
+    payerId,
+  }: FetchExpensesUseCaseProps): Promise<FetchExpensesUseCaseResponse> {
     const user = await this.userRepository.findById(payerId)
     if (!user) throw new NotFoundError('Payer not found')
+
+    const expenses = await this.expenseRepository.findMany(payerId)
+    return {
+      expenses,
+    }
   }
 }
