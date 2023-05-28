@@ -5,6 +5,7 @@ import { InMemoryExpenseRepository } from '@/src/application/repositories/in-mem
 import { makeExpense } from '../tests/factories'
 import { BadRequestError } from '@/src/shared/errors/global-errors'
 import { makeUser } from '../../user/tests/factories'
+import { Expense } from '../entity/expense'
 
 let sut: ExpendUseCase
 let inMemoryUserRepository: InMemoryUserRepository
@@ -23,9 +24,7 @@ describe('Expend Use Case ', () => {
     const expense = makeExpense({
       payerId: user.id,
     })
-
     await inMemoryUserRepository.add(user)
-
     await sut.execute(expense)
     expect(hashFindById).toHaveBeenCalledWith(expense.id)
   })
@@ -35,5 +34,16 @@ describe('Expend Use Case ', () => {
       const expense = makeExpense()
       await sut.execute(expense)
     }).rejects.toBeInstanceOf(BadRequestError)
+  })
+
+  it('Should return an expense on success', async () => {
+    const user = makeUser()
+    const expense = makeExpense({
+      payerId: user.id,
+    })
+    await inMemoryUserRepository.add(user)
+
+    const response = await sut.execute(expense)
+    expect(response.expense).toBeInstanceOf(Expense)
   })
 })
