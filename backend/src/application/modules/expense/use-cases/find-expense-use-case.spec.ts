@@ -33,11 +33,20 @@ describe('FindExpenseUseCase', () => {
     const user = makeUser()
     await inMemoryUserRepository.add(user)
 
-    const { payerId, id } = makeExpense({
+    const expense = makeExpense({
       payerId: user.id,
     })
+    const { payerId, id } = expense
+    inMemoryExpenseRepository.add(expense)
     await sut.execute({ payerId, expenseId: id })
 
     expect(findByIdSpy).toHaveBeenCalledWith(payerId)
+  })
+
+  it('Should call UserRepository with correct payerId', () => {
+    expect(async () => {
+      const { payerId } = makeExpense()
+      await sut.execute({ payerId, expenseId: 'wrong-id' })
+    }).rejects.toBeInstanceOf(NotFoundError)
   })
 })
