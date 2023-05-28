@@ -15,4 +15,14 @@ export class PrismaExpenseRepository implements ExpenseRepository {
 
     return PrismaExpenseMapper.toDomain(expenseFromPrisma)
   }
+
+  async findMany(payerId: string): Promise<Expense[]> {
+    const expenses = await this.prisma.expense.findMany({
+      where: {
+        userId: payerId,
+      },
+    })
+
+    return expenses.map(PrismaExpenseMapper.toDomain)
+  }
 }
