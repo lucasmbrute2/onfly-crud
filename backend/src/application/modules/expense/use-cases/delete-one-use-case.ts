@@ -1,6 +1,7 @@
 import { ExpenseRepository } from '@/src/application/repositories/expense-repository'
 import { UserRepository } from '@/src/application/repositories/user-repository'
 import { Forbidden, NotFoundError } from '@/src/shared/errors/global-errors'
+import { inject, injectable } from 'tsyringe'
 
 interface DeleteOneUseCaseProps {
   expenseId: string
@@ -9,9 +10,12 @@ interface DeleteOneUseCaseProps {
 
 type DeleteOneUseCaseResponse = void
 
+@injectable()
 export class DeleteOneUseCase {
   constructor(
+    @inject('UserRepository')
     private readonly userRepository: UserRepository,
+    @inject('ExpenseRepository')
     private readonly expenseRepository: ExpenseRepository,
   ) {}
 
@@ -24,10 +28,9 @@ export class DeleteOneUseCase {
     })
     if (!payer) throw new NotFoundError('Payer not found')
 
-    const expense = payer.expenses.find(
-      (expense) => expense.payerId === payer.id,
-    )
-    if (!expense) throw new Forbidden('You have no access for this expense')
+    const expense = payer.expenses.find((expense) => expense.id === expenseId)
+    if (!expense) throw new Forbidden('Expense not found')
+
     await this.expenseRepository.deleteOne(expenseId)
   }
 }
