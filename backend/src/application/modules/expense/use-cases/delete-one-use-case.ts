@@ -19,14 +19,15 @@ export class DeleteOneUseCase {
     expenseId,
     payerId,
   }: DeleteOneUseCaseProps): Promise<DeleteOneUseCaseResponse> {
-    const payer = await this.userRepository.findById(payerId)
+    const payer = await this.userRepository.findById(payerId, {
+      expenses: true,
+    })
     if (!payer) throw new NotFoundError('Payer not found')
 
     const expense = payer.expenses.find(
       (expense) => expense.payerId === payer.id,
     )
     if (!expense) throw new Forbidden('You have no access for this expense')
-
     await this.expenseRepository.deleteOne(expenseId)
   }
 }

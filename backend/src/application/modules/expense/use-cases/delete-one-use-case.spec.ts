@@ -42,7 +42,9 @@ describe('DeleteOne use case', () => {
     const { id: payerId, expenses } = user
     await sut.execute({ payerId, expenseId: expenses[0].id })
 
-    expect(findByIdSpy).toHaveBeenCalledWith(payerId)
+    expect(findByIdSpy).toHaveBeenCalledWith(payerId, {
+      expenses: true,
+    })
   })
 
   it('Should return Forbidden if User is not owner of the Expense', () => {
