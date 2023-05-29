@@ -23,4 +23,16 @@ export class InMemoryExpenseRepository implements ExpenseRepository {
     const expenseIndex = this.expenses.findIndex((expense) => expense.id === id)
     this.expenses.splice(expenseIndex, 1)
   }
+
+  async save(data: Expense): Promise<Expense> {
+    const expenseIndex = this.expenses.findIndex(
+      (expense) => expense.id === data.id,
+    )
+    if (expenseIndex === -1) {
+      this.expenses.push(data)
+    } else {
+      this.expenses[expenseIndex] = data
+    }
+    return data
+  }
 }

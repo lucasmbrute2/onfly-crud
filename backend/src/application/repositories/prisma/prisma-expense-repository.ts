@@ -50,4 +50,19 @@ export class PrismaExpenseRepository implements ExpenseRepository {
       },
     })
   }
+
+  async save(data: Expense): Promise<Expense> {
+    const expense = await this.prisma.expense.upsert({
+      where: {
+        id: data.id,
+      },
+      create: PrismaExpenseMapper.toPrisma(data),
+      update: PrismaExpenseMapper.toPrisma(data),
+      include: {
+        User: true,
+      },
+    })
+
+    return PrismaExpenseMapper.toDomain(expense)
+  }
 }

@@ -5,4 +5,5 @@ export interface ExpenseRepository {
   findMany(payerId: string): Promise<Expense[]>
   findById(id: string): Promise<Expense | null>
   deleteOne(id: string): Promise<void>
+  save(data: Expense): Promise<Expense>
 }
