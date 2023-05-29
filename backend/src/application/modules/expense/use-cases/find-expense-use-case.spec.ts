@@ -6,7 +6,7 @@ import { FindExpenseUseCase } from './find-expense-use-case'
 
 import { makeExpense } from '../tests/factories'
 import { NotFoundError } from '@/src/shared/errors/global-errors'
-import { makeUser } from '../../user/tests/factories'
+import { makeUser, makeUserPropsWithExpense } from '../../user/tests/factories'
 import { Expense } from '../entity/expense'
 
 let sut: FindExpenseUseCase
@@ -17,10 +17,7 @@ describe('FindExpenseUseCase', () => {
   beforeEach(() => {
     inMemoryUserRepository = new InMemoryUserRepository()
     inMemoryExpenseRepository = new InMemoryExpenseRepository()
-    sut = new FindExpenseUseCase(
-      inMemoryExpenseRepository,
-      inMemoryUserRepository,
-    )
+    sut = new FindExpenseUseCase(inMemoryUserRepository)
   })
 
   it('Should to throw if has not valid payer', () => {
@@ -32,17 +29,17 @@ describe('FindExpenseUseCase', () => {
 
   it('Should call UserRepository with correct payerId', async () => {
     const findByIdSpy = vi.spyOn(inMemoryUserRepository, 'findById')
-    const user = makeUser()
-    await inMemoryUserRepository.add(user)
+    const user = makeUser(makeUserPropsWithExpense())
+    inMemoryUserRepository.add(user)
 
-    const expense = makeExpense({
-      payerId: user.id,
+    const { id: payerId, expenses } = user
+    inMemoryExpenseRepository.add(expenses[0])
+
+    await sut.execute({ payerId, expenseId: expenses[0].id })
+
+    expect(findByIdSpy).toHaveBeenCalledWith(payerId, {
+      expenses: true,
     })
-    const { payerId, id } = expense
-    inMemoryExpenseRepository.add(expense)
-    await sut.execute({ payerId, expenseId: id })
-
-    expect(findByIdSpy).toHaveBeenCalledWith(payerId)
   })
 
   it('Should throw NotFoundError if not find expense', () => {
@@ -52,32 +49,14 @@ describe('FindExpenseUseCase', () => {
     }).rejects.toBeInstanceOf(NotFoundError)
   })
 
-  it('Should call ExpenseRepository with correct expenseId', async () => {
-    const findByIdSpy = vi.spyOn(inMemoryExpenseRepository, 'findById')
-    const user = makeUser()
-    await inMemoryUserRepository.add(user)
-
-    const expense = makeExpense({
-      payerId: user.id,
-    })
-    const { payerId, id } = expense
-    inMemoryExpenseRepository.add(expense)
-    await sut.execute({ payerId, expenseId: id })
-
-    expect(findByIdSpy).toHaveBeenCalledWith(expense.id)
-  })
-
   it('Should return an Expense on success', async () => {
-    const user = makeUser()
+    const user = makeUser(makeUserPropsWithExpense())
     inMemoryUserRepository.add(user)
-    const expense = makeExpense({
-      payerId: user.id,
-    })
-    const { payerId, id } = expense
-    inMemoryExpenseRepository.add(expense)
 
-    const response = await sut.execute({ payerId, expenseId: id })
+    const { id: payerId, expenses } = user
+    inMemoryExpenseRepository.add(expenses[0])
 
+    const response = await sut.execute({ payerId, expenseId: expenses[0].id })
     expect(response.expense).toBeInstanceOf(Expense)
   })
 })
