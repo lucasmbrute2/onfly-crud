@@ -14,7 +14,9 @@ export class AuthController {
     })
 
     return res.status(200).json({
-      user: UserView.toHttp(user),
+      user: UserView.toHttp(user, {
+        hideExpenses: true,
+      }),
       token: accessToken,
     })
   }

@@ -1,12 +1,21 @@
 import { User } from '../../modules/user/entity/user'
 
+interface HideProperties {
+  hideExpenses?: boolean
+}
+
 export class UserView {
-  static toHttp(user: User): Partial<User> {
-    return {
+  static toHttp(user: User, HideProperties?: HideProperties): Partial<User> {
+    const response: Partial<User> = {
       id: user.id,
       name: user.name,
       username: user.username,
-      expenses: user.expenses,
     }
+
+    if (!HideProperties?.hideExpenses) {
+      response.expenses = user.expenses
+    }
+
+    return response
   }
 }
