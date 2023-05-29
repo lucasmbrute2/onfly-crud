@@ -9,11 +9,11 @@ import { makeExpense } from '../../modules/expense/tests/factories'
 import { makeUser } from '../../modules/user/tests/factories'
 import { PrismaUserMapper } from './mappers/user-mapper'
 import { Expense } from '../../modules/expense/entity/expense'
+import { PrismaExpenseMapper } from './mappers/expense-mapper'
 
 const makeSut = (): ExpenseRepository => {
   return new PrismaExpenseRepository()
 }
-
 describe('ExpenseRepository', () => {
   const prisma = new PrismaClient()
   let schema: string
@@ -97,5 +97,29 @@ describe('ExpenseRepository', () => {
     const expenseFromDb = await sut.findById(expenseCreated.id)
 
     expect(expenseFromDb).toBeInstanceOf(Expense)
+  })
+
+  // deleteOne
+  it('Should be able to remove an Expense on success', async () => {
+    const sut = makeSut()
+    const user = makeUser()
+    await prisma.user.create({
+      data: PrismaUserMapper.toPrisma(user),
+    })
+
+    const expenseCreated = makeExpense({
+      payerId: user.id,
+    })
+
+    await prisma.expense.create({
+      data: PrismaExpenseMapper.toPrisma(expenseCreated),
+    })
+    await sut.deleteOne(expenseCreated.id)
+    const isExpenseDeleted = await prisma.expense.findUnique({
+      where: {
+        id: expenseCreated.id,
+      },
+    })
+    expect(isExpenseDeleted).toBeFalsy()
   })
 })
