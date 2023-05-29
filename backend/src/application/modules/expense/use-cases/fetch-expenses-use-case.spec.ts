@@ -2,23 +2,18 @@ import 'reflect-metadata'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { FetchExpensesUseCase } from './fetch-expenses-use-case'
 import { InMemoryUserRepository } from '@/src/application/repositories/in-memory/in-memory-user-repository'
-import { InMemoryExpenseRepository } from '@/src/application/repositories/in-memory/in-memory-expense-repository'
 import { makeExpense } from '../tests/factories'
 import { NotFoundError } from '@/src/shared/errors/global-errors'
-import { makeUser } from '../../user/tests/factories'
+import { makeUser, makeUserPropsWithExpense } from '../../user/tests/factories'
+import { Expense } from '../entity/expense'
 
 let sut: FetchExpensesUseCase
 let inMemoryUserRepository: InMemoryUserRepository
-let inMemoryExpenseRepository: InMemoryExpenseRepository
 
 describe('Fetch expenses', () => {
   beforeEach(() => {
     inMemoryUserRepository = new InMemoryUserRepository()
-    inMemoryExpenseRepository = new InMemoryExpenseRepository()
-    sut = new FetchExpensesUseCase(
-      inMemoryExpenseRepository,
-      inMemoryUserRepository,
-    )
+    sut = new FetchExpensesUseCase(inMemoryUserRepository)
   })
 
   it('Should to throw if has not valid payer', () => {
@@ -36,6 +31,19 @@ describe('Fetch expenses', () => {
       payerId: user.id,
     })
 
-    expect(findByIdSpy).toHaveBeenCalledWith(user.id)
+    expect(findByIdSpy).toHaveBeenCalledWith(user.id, {
+      expenses: true,
+    })
+  })
+
+  it('Should return an array of the payer Expenses on success', async () => {
+    const user = makeUser(makeUserPropsWithExpense())
+    inMemoryUserRepository.add(user)
+    const { expenses } = await sut.execute({
+      payerId: user.id,
+    })
+
+    expect(expenses[0]).toBeInstanceOf(Expense)
+    expect(expenses).toHaveLength(1)
   })
 })
