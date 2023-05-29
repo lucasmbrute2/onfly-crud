@@ -122,4 +122,51 @@ describe('ExpenseRepository', () => {
     })
     expect(isExpenseDeleted).toBeFalsy()
   })
+
+  // save()
+  it('Should be able to create an Expense on success', async () => {
+    const sut = makeSut()
+    const user = makeUser()
+
+    await prisma.user.create({
+      data: PrismaUserMapper.toPrisma(user),
+    })
+
+    const expense = await sut.add(
+      makeExpense({
+        payerId: user.id,
+      }),
+    )
+
+    expect(expense).toBeInstanceOf(Expense)
+    expect(expense).toMatchObject(
+      makeExpense({
+        payerId: user.id,
+        createdAt: expense.createdAt,
+      }),
+    )
+  })
+
+  it('Should be able to update an Expense on success', async () => {
+    const sut = makeSut()
+    const user = makeUser()
+
+    await prisma.user.create({
+      data: PrismaUserMapper.toPrisma(user),
+    })
+
+    const expense = makeExpense({
+      payerId: user.id,
+    })
+    await prisma.expense.create({
+      data: PrismaExpenseMapper.toPrisma(expense),
+    })
+
+    const newDescription = 'any-other-description'
+    expense.description = newDescription
+    const updatedExpense = await sut.save(expense)
+
+    expect(updatedExpense).toBeInstanceOf(Expense)
+    expect(updatedExpense.description).toBe(newDescription)
+  })
 })
