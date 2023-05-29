@@ -36,10 +36,15 @@ describe('Register author use case', () => {
   it('Should call AddUserRepository with correct values', async () => {
     const addSpy = vi.spyOn(inMemoryUserRepository, 'add')
     const userModel = makeUserModel()
-    const response = await sut.execute(userModel)
-    const user = makeUser({ id: response?.user?.id })
 
-    expect(addSpy).toHaveBeenCalledWith(user)
+    const user = makeUser(userModel)
+    const response = await sut.execute(user)
+
+    const userToCompare = makeUser({
+      ...userModel,
+      id: response.user.id,
+    })
+    expect(addSpy).toHaveBeenCalledWith(userToCompare)
   })
 
   it('Should be able to register an User', async () => {

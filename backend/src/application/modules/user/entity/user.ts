@@ -14,6 +14,7 @@ export class User {
     this.props = {
       ...props,
       id: this.props.id ?? randomUUID(),
+      expenses: this.expenses ?? [],
     }
   }
 
