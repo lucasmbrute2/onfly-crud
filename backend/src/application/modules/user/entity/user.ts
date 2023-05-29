@@ -14,7 +14,7 @@ export class User {
     this.props = {
       ...props,
       id: this.props.id ?? randomUUID(),
-      expenses: this.expenses ?? [],
+      expenses: this.props.expenses ?? [],
     }
   }
 
@@ -42,12 +42,12 @@ export class User {
     this.props.username = username
   }
 
-  get password(): string {
-    return this.props.password
-  }
-
   set password(password: string) {
     this.props.password = password
+  }
+
+  get password(): string {
+    return this.props.password
   }
 
   set expenses(expenses: Expense[] | undefined) {

@@ -3,6 +3,7 @@ import { UserRepository } from '@/src/application/repositories/user-repository'
 import { NotFoundError } from '@/src/shared/errors/global-errors'
 import { Expense } from '../entity/expense'
 import { inject, injectable } from 'tsyringe'
+import { Mail } from '@/src/application/repositories/mail'
 
 interface ExpendUseCaseProps {
   description: string
@@ -21,6 +22,8 @@ export class ExpendUseCase {
     private readonly expenseRepository: ExpenseRepository,
     @inject('UserRepository')
     private readonly userRepository: UserRepository,
+    @inject('Mailer')
+    private readonly mailProvider: Mail,
   ) {}
 
   async execute({
@@ -38,6 +41,17 @@ export class ExpendUseCase {
     })
 
     await this.expenseRepository.add(expense)
+
+    const { name, username } = hasValidPayer
+    const context = {
+      name,
+    }
+    await this.mailProvider.sendMail({
+      context,
+      subject: 'New expense',
+      to: username,
+    })
+
     return {
       expense,
     }
