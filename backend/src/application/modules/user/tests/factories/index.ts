@@ -6,14 +6,27 @@ import {
   RegisterUser,
 } from '../../use-cases/protocols'
 import { Auth } from '@/src/application/repositories/auth'
+import { makeExpense } from '../../../expense/tests/factories'
 
 export const makeUserProps = (): UserProps => ({
   id: 'any-id',
   name: 'any-name',
   password: 'any-password',
   username: 'any-username',
+  expenses: [],
 })
 
+export const makeUserPropsWithExpense = (): UserProps => ({
+  id: 'any-id',
+  name: 'any-name',
+  password: 'any-password',
+  username: 'any-username',
+  expenses: [
+    makeExpense({
+      payerId: 'any-id',
+    }),
+  ],
+})
 export const makeUser = (override?: Partial<User>) => {
   return new User({
     ...makeUserProps(),

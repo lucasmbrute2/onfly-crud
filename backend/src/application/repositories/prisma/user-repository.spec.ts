@@ -65,7 +65,6 @@ describe('UserRepository', () => {
   })
 
   // findByUsername
-
   it('Should return an User on success', async () => {
     const sut = makeSut()
     const userFromFactory = makeUser()

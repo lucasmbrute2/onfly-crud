@@ -1,6 +1,6 @@
 import { ExpenseRepository } from '@/src/application/repositories/expense-repository'
 import { UserRepository } from '@/src/application/repositories/user-repository'
-import { NotFoundError } from '@/src/shared/errors/global-errors'
+import { Forbidden, NotFoundError } from '@/src/shared/errors/global-errors'
 
 interface DeleteOneUseCaseProps {
   expenseId: string
@@ -21,5 +21,12 @@ export class DeleteOneUseCase {
   }: DeleteOneUseCaseProps): Promise<DeleteOneUseCaseResponse> {
     const payer = await this.userRepository.findById(payerId)
     if (!payer) throw new NotFoundError('Payer not found')
+
+    const expense = payer.expenses.find(
+      (expense) => expense.payerId === payer.id,
+    )
+    if (!expense) throw new Forbidden('You have no access for this expense')
+
+    await this.expenseRepository.deleteOne(expenseId)
   }
 }
