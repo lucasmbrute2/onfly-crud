@@ -11,8 +11,18 @@ const createBodySchema = z.object({
   }),
 })
 
+const updateBodySchema = z.object({
+  description: z
+    .string()
+    .optional()
+    .refine((description) => description?.length < 191, {
+      message: 'Description should not be greater than 191 characters',
+    }),
+})
+
 const validationByRoutePaths = {
   '/': createBodySchema,
+  '/:expenseId': updateBodySchema,
 }
 
 type Paths = keyof typeof validationByRoutePaths
@@ -22,7 +32,8 @@ export function validateExpenseBody(
   res: Response,
   next: NextFunction,
 ) {
-  const validation = validationByRoutePaths[req.path as Paths].safeParse(
+  console.log(req.route.path)
+  const validation = validationByRoutePaths[req.route.path as Paths].safeParse(
     req.body,
   )
 

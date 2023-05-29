@@ -5,6 +5,7 @@ import { Authorization } from '../middlewares/ensure-auth'
 import { FetchExpensesController } from '../controllers/expenses/fetch-controller'
 import { FindExpenseController } from '../controllers/expenses/find-controller'
 import { DeleteOneController } from '../controllers/expenses/delete-one-controller'
+import { UpdateOneExpenseController } from '../controllers/expenses/update-one-controller'
 
 const expenseRoute = Router()
 const authorization = new Authorization()
@@ -13,6 +14,7 @@ const expendController = new ExpendController()
 const fetchExpensesController = new FetchExpensesController()
 const findExpenseController = new FindExpenseController()
 const deleteOneController = new DeleteOneController()
+const updateOneExpenseController = new UpdateOneExpenseController()
 
 // protected routes
 expenseRoute.post(
@@ -32,6 +34,13 @@ expenseRoute.delete(
   '/:expenseId',
   authorization.ensureAuth,
   deleteOneController.handle,
+)
+
+expenseRoute.patch(
+  '/:expenseId',
+  authorization.ensureAuth,
+  validateExpenseBody,
+  updateOneExpenseController.handle,
 )
 
 export { expenseRoute }
