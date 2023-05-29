@@ -83,10 +83,9 @@ describe('ExpenseRepository', () => {
   })
 
   // findById()
-  it('Should return an Expenses on success', async () => {
+  it('Should return an Expense on success', async () => {
     const sut = makeSut()
     const user = makeUser()
-
     await prisma.user.create({
       data: PrismaUserMapper.toPrisma(user),
     })

@@ -21,6 +21,9 @@ export class PrismaExpenseRepository implements ExpenseRepository {
       where: {
         userId: payerId,
       },
+      include: {
+        User: true,
+      },
     })
 
     return expenses.map(PrismaExpenseMapper.toDomain)
@@ -30,6 +33,9 @@ export class PrismaExpenseRepository implements ExpenseRepository {
     const expense = await this.prisma.expense.findUnique({
       where: {
         id,
+      },
+      include: {
+        User: true,
       },
     })
 

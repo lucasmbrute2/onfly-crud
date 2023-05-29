@@ -2,6 +2,7 @@ import { randomUUID } from 'crypto'
 import { InvalidCredentialsError } from '../../user/errors/invalid-credentials-error'
 import { InvalidCostError } from '../../user/errors/invalid-cost-error'
 import { AppError } from '@/src/shared/errors/global-errors'
+import { User } from '../../user/entity/user'
 
 export interface ExpenseProps {
   id?: string
@@ -9,6 +10,7 @@ export interface ExpenseProps {
   createdAt?: Date
   cost: number
   payerId: string
+  payer?: User
 }
 
 export class Expense {
@@ -89,5 +91,13 @@ export class Expense {
 
   set payerId(payerId: string) {
     this.props.payerId = payerId
+  }
+
+  get payer(): User {
+    return this.props.payer
+  }
+
+  set payer(payer: User) {
+    this.props.payer = payer
   }
 }
