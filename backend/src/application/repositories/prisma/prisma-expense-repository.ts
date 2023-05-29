@@ -42,4 +42,12 @@ export class PrismaExpenseRepository implements ExpenseRepository {
     if (!expense) return null
     return PrismaExpenseMapper.toDomain(expense)
   }
+
+  async deleteOne(id: string): Promise<void> {
+    await this.prisma.expense.delete({
+      where: {
+        id,
+      },
+    })
+  }
 }

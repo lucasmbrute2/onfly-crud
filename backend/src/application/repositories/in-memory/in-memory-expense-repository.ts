@@ -18,4 +18,9 @@ export class InMemoryExpenseRepository implements ExpenseRepository {
     if (!expense) return null
     return expense
   }
+
+  async deleteOne(id: string): Promise<void> {
+    const expenseIndex = this.expenses.findIndex((expense) => expense.id === id)
+    this.expenses.splice(expenseIndex, 1)
+  }
 }
