@@ -1,10 +1,11 @@
-import { Transporter, createTransport } from 'nodemailer'
+import { Transporter, createTransport, getTestMessageUrl } from 'nodemailer'
 import { Mail, MailProps } from '../mail'
 import { env } from '../../env'
 import { readFileSync } from 'fs'
 import Handlebars from 'handlebars'
 import { injectable } from 'tsyringe'
 import { resolve } from 'path'
+import { AppError } from '@/src/shared/errors/global-errors'
 
 @injectable()
 export class NodeMailerAdapter implements Mail {
@@ -12,8 +13,9 @@ export class NodeMailerAdapter implements Mail {
 
   constructor() {
     this.client = createTransport({
-      host: env.MAIL_PORT,
-      from: env.MAIL_HOST,
+      host: env.MAIL_HOST,
+      from: env.MAIL_PORT,
+      secure: false,
       auth: {
         user: env.MAIL_USER,
         pass: env.MAIL_PASSWORD,
@@ -27,11 +29,20 @@ export class NodeMailerAdapter implements Mail {
     const templateParse = Handlebars.compile(templateFileContent)
     const templateHTML = templateParse(context)
 
-    await this.client.sendMail({
-      html: templateHTML,
-      to,
-      subject,
-      from: env.MAIL_HOST,
-    })
+    this.client.sendMail(
+      {
+        html: templateHTML,
+        to,
+        subject,
+        from: env.MAIL_HOST,
+      },
+      (err, info) => {
+        if (err) {
+          throw new AppError(err.message, 500)
+        }
+        console.log('Message sent: %s', info?.messageId)
+        console.log('Preview URL: %s', getTestMessageUrl(info))
+      },
+    )
   }
 }

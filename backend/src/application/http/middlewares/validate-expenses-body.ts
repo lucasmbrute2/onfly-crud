@@ -32,7 +32,6 @@ export function validateExpenseBody(
   res: Response,
   next: NextFunction,
 ) {
-  console.log(req.route.path)
   const validation = validationByRoutePaths[req.route.path as Paths].safeParse(
     req.body,
   )
