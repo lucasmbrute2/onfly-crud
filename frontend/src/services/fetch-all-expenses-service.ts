@@ -1,4 +1,4 @@
-import { axiosInstance } from 'src/lib/axios'
+import { api } from 'src/boot/axios'
 
 interface ExpenseModel {
 	expenses: [
@@ -20,7 +20,7 @@ export const fetchExpenses = async ()=> {
   const token = localStorage.getItem('token')
 
   try {
-    const response = await axiosInstance.get<ExpenseModel>('/expenses', {
+    const response = await api.get<ExpenseModel>('/expenses', {
       headers: {
         Authorization: `Bearer ${token}`
       }

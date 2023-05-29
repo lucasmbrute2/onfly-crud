@@ -1,5 +1,5 @@
 import { Notify } from 'quasar'
-import { axiosInstance } from 'src/lib/axios'
+import { api } from 'src/boot/axios'
 
 interface authUserPayload {
 	password: string
@@ -8,7 +8,7 @@ interface authUserPayload {
 
 export const authUserService = async (data:authUserPayload)=> {
   try {
-    const response = await axiosInstance.post('/users/auth', data)
+    const response = await api.post('/users/auth', data)
     localStorage.setItem('token', response?.data?.token)
     console.log(response)
 

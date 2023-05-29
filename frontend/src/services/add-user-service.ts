@@ -1,4 +1,4 @@
-import { axiosInstance } from 'src/lib/axios'
+import { api } from 'src/boot/axios'
 
 interface userPayolad {
 	name: string
@@ -9,7 +9,7 @@ interface userPayolad {
 
 export const addUserService = async (data:userPayolad)=> {
   try {
-    const response = await axiosInstance.post('/users', data)
+    const response = await api.post('/users', data)
 
   } catch (error) {
     console.error(error)
