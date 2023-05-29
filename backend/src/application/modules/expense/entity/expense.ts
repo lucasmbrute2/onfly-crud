@@ -18,10 +18,13 @@ export class Expense {
   private readonly MIN_COST = 1
 
   constructor(private props: ExpenseProps) {
+    const createdAt = this.props?.createdAt || props.createdAt || new Date()
+    const id = this.props?.id || props?.id || randomUUID()
+
     this.props = {
       ...props,
-      id: this.props.id ?? randomUUID(),
-      createdAt: this.props.createdAt ?? new Date(),
+      id,
+      createdAt,
     }
     this.validateDescriptionSize()
     this.validateCostValue()
