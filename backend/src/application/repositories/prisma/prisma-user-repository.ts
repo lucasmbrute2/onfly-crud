@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-import { UserRepository } from '../user-repository'
+import { IncludeRelation, UserRepository } from '../user-repository'
 import { PrismaUserMapper } from './mappers/user-mapper'
 import { User } from '../../modules/user/entity/user'
 import { injectable } from 'tsyringe'
@@ -16,10 +16,16 @@ export class PrismaUserRepository implements UserRepository {
     return PrismaUserMapper.toDomain(user)
   }
 
-  async findById(id: string): Promise<User | null> {
+  async findById(
+    id: string,
+    includeRelation?: IncludeRelation,
+  ): Promise<User | null> {
     const user = await this.prisma.user.findUnique({
       where: {
         id,
+      },
+      include: {
+        expenses: includeRelation?.expenses ?? false,
       },
     })
 
@@ -27,10 +33,16 @@ export class PrismaUserRepository implements UserRepository {
     return PrismaUserMapper.toDomain(user)
   }
 
-  async findByUsername(username: string): Promise<User | null> {
+  async findByUsername(
+    username: string,
+    includeRelation?: IncludeRelation,
+  ): Promise<User | null> {
     const user = await this.prisma.user.findUnique({
       where: {
         username,
+      },
+      include: {
+        expenses: includeRelation?.expenses ?? false,
       },
     })
     if (!user) return null

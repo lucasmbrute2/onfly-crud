@@ -6,6 +6,7 @@ export class UserView {
       id: user.id,
       name: user.name,
       username: user.username,
+      expenses: user.expenses,
     }
   }
 }

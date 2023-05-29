@@ -1,10 +1,12 @@
 import { randomUUID } from 'node:crypto'
+import { Expense } from '../../expense/entity/expense'
 
 export interface UserProps {
   id?: string
   name: string
   username: string
   password: string
+  expenses?: Expense[]
 }
 
 export class User {
@@ -45,5 +47,17 @@ export class User {
 
   set password(password: string) {
     this.props.password = password
+  }
+
+  set expenses(expenses: Expense[] | undefined) {
+    if (expenses?.length) {
+      this.props.expenses = this.props.expenses
+        ? [...this.props.expenses, ...expenses]
+        : [...expenses]
+    }
+  }
+
+  get expenses(): Expense[] | undefined {
+    return this.props.expenses
   }
 }
