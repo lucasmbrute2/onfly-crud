@@ -12,7 +12,7 @@
         <q-card-section class="q-pt-xs">
           <div class="text-h5 q-mt-sm q-mb-xs">Title</div>
           <div class="text-caption text-grey">
-           {{ item.description }}
+           {{ item.description  }}
           </div>
         </q-card-section>
       </q-card-section>
@@ -32,6 +32,7 @@
 </template>
 
 <script setup lang="ts">
+import { dateToAmerican } from 'src/helpers/formatt-date';
 import { fetchExpenses } from 'src/services/fetch-all-expenses-service';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -40,7 +41,14 @@ const router = useRouter()
 const expenses = ref()
 
 onMounted(async()=> {
-  expenses.value = await fetchExpenses()
+  const response = await fetchExpenses()
+  expenses.value  = response?.map(expense => {
+    if (expense) {
+      expense.createdAt = dateToAmerican(new Date(expense.createdAt))
+      return expense
+    }
+  })
+
 })
 </script>
 

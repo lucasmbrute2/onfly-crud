@@ -12,6 +12,7 @@
         filled
         v-model="username"
         label="Your username *"
+        type="email"
         lazy-rules
         :rules="[
           val => val !== null && val !== '' || 'Please type your username',

@@ -1,23 +1,31 @@
 import { axiosInstance } from 'src/lib/axios'
 
-const options = {
-  hour: 'numeric',
-  minute: 'numeric',
-  second: 'numeric',
-  hour12: true,
-};
+interface ExpenseModel {
+	expenses: [
+		{
+			id: string
+			cost: number
+			createdAt: Date | string
+			description: string
+			payer: {
+				id: string
+				name: string,
+				username: string
+			}
+		}
+	]
+}
 
 export const fetchExpenses = async ()=> {
   const token = localStorage.getItem('token')
 
   try {
-    const response = await axiosInstance.get('/expenses', {
+    const response = await axiosInstance.get<ExpenseModel>('/expenses', {
       headers: {
         Authorization: `Bearer ${token}`
       }
     })
-    console.log(response.data.expenses)
-    return { ...response.data.expenses, createdAt: '' }
+    return response.data.expenses
   } catch (error) {
     console.error(error)
   }
