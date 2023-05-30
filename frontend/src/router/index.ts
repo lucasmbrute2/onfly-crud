@@ -34,10 +34,12 @@ export default route(function (/* { store, ssrContext } */) {
   Router.beforeEach((to, from, next)=> {
     const token =  localStorage.getItem('token')
 
+    if (from.name === 'login' && to.name === 'register') {
+      next()
+    }
     if (!token && to.name !== 'login') {
       next({ name: 'login' })
     }
-
     next()
   })
 
