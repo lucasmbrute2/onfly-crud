@@ -1,55 +1,70 @@
 <template>
-  <button @click="router.push('/login')">
+  <q-btn @click="router.push('/login')">
     Login
-  </button>
-  <button @click="router.push('/register')">
+  </q-btn>
+  <q-btn @click="router.push('/register')">
     Register
-  </button>
+  </q-btn>
 
-  <div class="flex">
-  <q-card class="my-card" flat bordered v-for="item in expenses" v-bind="item" :key="item.id">
-      <q-card-section horizontal>
-        <q-card-section class="q-pt-xs">
-          <div class="text-h5 q-mt-sm q-mb-xs">Title</div>
-          <div class="text-caption text-grey">
-           {{ item.description  }}
-          </div>
-        </q-card-section>
-      </q-card-section>
-      <q-separator />
-
-      <q-card-actions>
-        <q-btn flat round icon="event" />
-        <q-btn flat>
-          {{ item.createdAt }}
-        </q-btn>
-        <q-btn flat color="primary">
-          Editar
-        </q-btn>
-      </q-card-actions>
-    </q-card>
+  <div class="q-pa-md">
+    <q-table title="Gastos" :rows="rows" :columns="columns" row-key="name">
+      <template v-slot:body-cell-actions="props">
+        <q-td :props="props">
+          <q-btn icon="delete" color="negative" dense size="sm" @click="handleDeleteExpense(props.row.id)" />
+        </q-td>
+      </template>
+    </q-table>
   </div>
 </template>
 
 <script setup lang="ts">
-import { dateToAmerican } from 'src/helpers/formatt-date';
 import { fetchExpenses } from 'src/services/fetch-all-expenses-service';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { deleteExpense } from '../services/delete-expense'
+import { Expense } from '../services/fetch-all-expenses-service'
+import { useQuasar } from 'quasar'
 
 const router = useRouter()
-const expenses = ref()
+const columns = [
+  { name: 'custo', align: 'left', label: 'Custo', field: 'cost', sortable: true },
+  { name: 'description', align: 'left', label: 'Descrição', field: 'description', sortable: true },
+  { name: 'description', align: 'left', label: 'Descrição', field: 'description', sortable: true },
+  { name: 'createdAt', align: 'center', label: 'Data de criação', field: 'createdAt', sortable: true },
+  { name: 'actions', align: 'right', label: 'Ações', field: 'actions' },
+]
+const rows = ref<Expense[]>([])
 
-onMounted(async()=> {
+
+const $q = useQuasar()
+
+async function getExpenses() {
   const response = await fetchExpenses()
-  expenses.value  = response?.map(expense => {
-    if (expense) {
-      expense.createdAt = dateToAmerican(new Date(expense.createdAt))
-      return expense
-    }
-  })
+  rows.value = response as Expense[]
+}
 
+onMounted(async () => {
+  await getExpenses()
 })
+
+async function handleDeleteExpense(expenseId: string) {
+  $q.dialog({
+    title: 'Confirmação',
+    message: 'Tem certeza que deseja apagar a despesa ?',
+    cancel: true,
+
+    persistent: true
+  }).onOk(async () => {
+    await deleteExpense(expenseId)
+    $q.notify({
+      message: 'Deletado com sucesso',
+      icon: 'check',
+      color: 'positive'
+    })
+    await getExpenses()
+  })
+}
+
 </script>
 
 <style lang="sass" scoped>
