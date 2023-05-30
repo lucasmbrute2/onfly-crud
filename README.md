@@ -27,7 +27,7 @@ npm run test:unit
 ps: Deixei as minhas variáveis do Ethereal para disparo de e-mail local, por algum motivo o gmail não tava liberando meu acesso x.x
 A cada crição de despesa é enviado um log ao terminal do Backend com uma URL, basta acessa-la.
 
-### Exemplo:
+### O e-mail deve ser assim:
 ![image](https://github.com/lucasmbrute2/onfly-crud/assets/68877260/e4579bfd-3848-4045-96ff-567290437872)
 
 
