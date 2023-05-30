@@ -1,15 +1,17 @@
 <template>
-  <q-btn @click="router.push('/login')">
-    Login
-  </q-btn>
-  <q-btn @click="router.push('/register')">
-    Register
-  </q-btn>
-
   <div class="q-pa-md">
     <q-table title="Gastos" :rows="rows" :columns="columns" row-key="name">
+      <template v-slot:top>
+        <h1 class="text-h5">
+          Despesas
+        </h1>
+        <q-space />
+        <q-btn color="primary" label="Novo" :to="{ name: 'addExpenseForm' }" />
+      </template>
+
       <template v-slot:body-cell-actions="props">
-        <q-td :props="props">
+        <q-td :props="props" class="q-gutter-sm">
+          <q-btn icon="edit" color="info" dense size="sm" @click="handleEditExpense(props.row.id)" />
           <q-btn icon="delete" color="negative" dense size="sm" @click="handleDeleteExpense(props.row.id)" />
         </q-td>
       </template>
@@ -25,18 +27,15 @@ import { deleteExpense } from '../services/delete-expense'
 import { Expense } from '../services/fetch-all-expenses-service'
 import { useQuasar } from 'quasar'
 
+const $q = useQuasar()
 const router = useRouter()
 const columns = [
   { name: 'custo', align: 'left', label: 'Custo', field: 'cost', sortable: true },
-  { name: 'description', align: 'left', label: 'Descrição', field: 'description', sortable: true },
   { name: 'description', align: 'left', label: 'Descrição', field: 'description', sortable: true },
   { name: 'createdAt', align: 'center', label: 'Data de criação', field: 'createdAt', sortable: true },
   { name: 'actions', align: 'right', label: 'Ações', field: 'actions' },
 ]
 const rows = ref<Expense[]>([])
-
-
-const $q = useQuasar()
 
 async function getExpenses() {
   const response = await fetchExpenses()
@@ -49,10 +48,9 @@ onMounted(async () => {
 
 async function handleDeleteExpense(expenseId: string) {
   $q.dialog({
-    title: 'Confirmação',
+    title: 'Remover',
     message: 'Tem certeza que deseja apagar a despesa ?',
     cancel: true,
-
     persistent: true
   }).onOk(async () => {
     await deleteExpense(expenseId)
@@ -62,6 +60,13 @@ async function handleDeleteExpense(expenseId: string) {
       color: 'positive'
     })
     await getExpenses()
+  })
+}
+
+async function handleEditExpense(expenseId: string) {
+  router.push({
+    name: 'addExpenseForm',
+    params: { expenseId }
   })
 }
 

@@ -9,8 +9,7 @@ export class UpdateOneExpenseController {
     const payerId = req.payerId
     const data = req.body
 
-    const AVAILABLE_DATA_TO_BE_UPDATED = ['description']
-
+    const AVAILABLE_DATA_TO_BE_UPDATED = ['description', 'cost']
     const hasSomeUnavailableData = Object.keys(data).some(
       (val) => !AVAILABLE_DATA_TO_BE_UPDATED.includes(val),
     )

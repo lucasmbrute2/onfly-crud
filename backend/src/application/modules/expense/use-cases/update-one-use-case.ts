@@ -41,7 +41,7 @@ export class UpdateOneExpenseUseCase {
         id: expense.id,
         createdAt: expense.createdAt,
         payerId,
-        cost: expense?.cost,
+        cost: Number(data?.cost),
         description: data?.description,
       }),
     )

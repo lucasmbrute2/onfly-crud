@@ -9,7 +9,7 @@ interface userPayolad {
 
 export const addUserService = async (data:userPayolad)=> {
   try {
-    const response = await api.post('/users', data)
+    await api.post('/users', data)
 
   } catch (error) {
     console.error(error)

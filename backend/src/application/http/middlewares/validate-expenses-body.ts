@@ -6,7 +6,7 @@ const createBodySchema = z.object({
   description: z.string().refine((description) => description.length < 191, {
     message: 'Description should not be greater than 191 characters',
   }),
-  cost: z.number().refine((cost) => cost > 0, {
+  cost: z.coerce.number().refine((cost) => cost > 0, {
     message: 'Mininum cost is 1.',
   }),
 })

@@ -10,16 +10,14 @@ export const authUserService = async (data:authUserPayload)=> {
   try {
     const response = await api.post('/users/auth', data)
     localStorage.setItem('token', response?.data?.token)
-    console.log(response)
 
-    Notify.create('Sucess!')
+    Notify.create({
+      message: 'Bem vindo!',
+      icon: 'check',
+      color: 'positive'
+    })
   } catch (error) {
-
     console.log(error)
-    // eslint-disable-next-line
-    // @ts-ignore
-    Notify.create(error?.response?.data)
-    console.error(error)
   }
 }
 

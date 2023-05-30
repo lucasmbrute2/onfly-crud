@@ -33,7 +33,7 @@
         <q-btn label="Submit" type="submit" color="primary"/>
       </div>
     </q-form>
-
+    <q-btn>Registrar-se</q-btn>
   </div>
 </template>
 

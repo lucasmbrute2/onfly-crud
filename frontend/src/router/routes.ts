@@ -8,7 +8,9 @@ const routes: RouteRecordRaw[] = [
     children: [
       { path: '', name: 'home', component: () => import('pages/IndexPage.vue') },
       { path: '/login', name: 'login', component: () => import('src/pages/LoginPage.vue')},
-      { path: '/register', name: 'register', component: () => import('pages/RegisterPage.vue')}
+      { path: '/register', name: 'register', component: () => import('pages/RegisterPage.vue')},
+      { path: '/form-expense/:expenseId?', name: 'addExpenseForm', component: () => import('pages/AddExpenseForm.vue')},
+      { path: '/logout', name: 'logout', component: () => import('pages/ExitPage.vue')}
     ]
   },
   // Always leave this as last one,

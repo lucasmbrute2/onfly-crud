@@ -5,17 +5,16 @@
         <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
 
         <q-toolbar-title>
-          Quasar App
+          Onfly | Despesas
         </q-toolbar-title>
 
         <div>Quasar v{{ $q.version }}</div>
       </q-toolbar>
     </q-header>
-
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
       <q-list>
         <q-item-label header>
-          Essential Links
+          Menu
         </q-item-label>
 
         <EssentialLink v-for="link in essentialLinks" :key="link.title" v-bind="link" />
@@ -29,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import EssentialLink, { EssentialLinkProps } from 'components/EssentialLink.vue';
 
 const essentialLinks: EssentialLinkProps[] = [
@@ -40,8 +39,25 @@ const essentialLinks: EssentialLinkProps[] = [
   },
 ];
 
-const leftDrawerOpen = ref(false)
+onMounted(() => {
+  const token = localStorage.getItem('token')
+  if (token) {
+    essentialLinks.push({
+      title: 'Logout',
+      icon: 'bi-box-arrow-left',
+      route: 'logout'
+    })
+  }
+  else {
+    essentialLinks.push({
+      title: 'Login',
+      icon: 'login',
+      route: 'login'
+    })
+  }
+})
 
+const leftDrawerOpen = ref(false)
 function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value
 }

@@ -3,7 +3,7 @@
     <button @click="router.push('/')">
       Voltar
     </button>
-    <q-form @submit.prevent="onSubmit" @reset="onReset" class="q-gutter-md">
+    <q-form @submit.prevent="onSubmit" class="q-gutter-md">
       <q-input filled v-model="username" label="Your username *" lazy-rules :rules="[
         val => val !== null && val !== '' || 'Please type your username',
       ]" />

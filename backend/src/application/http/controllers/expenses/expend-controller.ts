@@ -10,7 +10,7 @@ export class ExpendController {
 
     const expendUseCase = container.resolve(ExpendUseCase)
     const { expense } = await expendUseCase.execute({
-      cost,
+      cost: +cost,
       description,
       payerId,
     })
