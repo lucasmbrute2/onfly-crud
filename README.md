@@ -1,4 +1,4 @@
-# Boas vindo a bordo do Onfly Expenses!
+# Boas vindas a bordo do Onfly Expenses!
 ### Aqui você irá encontrar um CRUD de despesas e autenticação de usuários
 
 O projeto está em Nodejs com alguns conceitos de arquitetura em camadas, mas não segue a Clean Architecture a risca, o Controller está acoplado ao express.
