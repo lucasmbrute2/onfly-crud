@@ -38,8 +38,15 @@ const rows = ref<Expense[]>([])
 
 
 async function handleGetExpenses() {
-  const response = await getExpenses()
-  rows.value = response as Expense[]
+  try {
+    const response = await getExpenses()
+    rows.value = response as Expense[]
+  } catch (error) {
+    $q.notify({
+      message: 'Não conseguimos buscar suas despsas, tente novamente mais tarde.',
+      color: 'red'
+    })
+  }
 }
 
 onMounted(async () => {
