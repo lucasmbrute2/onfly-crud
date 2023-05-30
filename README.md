@@ -50,3 +50,13 @@ password: string
 ```
 ![image](https://github.com/lucasmbrute2/onfly-crud/assets/68877260/7035f2ee-2364-4e1b-b8fc-b2ff5abd6f83)
 
+POST /expenses
+```
+description: string
+cost: number
+```
+![image](https://github.com/lucasmbrute2/onfly-crud/assets/68877260/553fbc2c-9746-4080-a3f4-0fca69594ac7)
+
+### Os outros endpoints não possuem body obrigatório
+
+
