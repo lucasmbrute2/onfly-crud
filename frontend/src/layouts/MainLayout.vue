@@ -40,8 +40,9 @@ const essentialLinks: EssentialLinkProps[] = [
 ];
 
 onMounted(() => {
-  const token = localStorage.getItem('token')
-  if (token) {
+  const token = ref(localStorage.getItem('token'))
+
+  if (token.value) {
     essentialLinks.push({
       title: 'Logout',
       icon: 'bi-box-arrow-left',

@@ -1,28 +1,28 @@
 <template>
-  <div class="q-pa-md" style="max-width: 400px">
-    <button @click="router.push('/')">
-      Voltar
-    </button>
-    <q-form @submit.prevent="onSubmit" class="q-gutter-md">
-      <q-input filled v-model="username" label="Your username *" lazy-rules :rules="[
-        val => val !== null && val !== '' || 'Please type your username',
-      ]" />
-      <q-input filled v-model="name" label="Your name *" lazy-rules :rules="[
-        val => val !== null && val !== '' || 'Please type your name',
-      ]" />
-      <q-input filled v-model="password" type="password" label="Your password *" lazy-rules :rules="[
-        val => val !== null && val !== '' || 'Please type your password',
-      ]" />
-      <q-input filled v-model="confirmPassword" type="password" label="Your password *" lazy-rules :rules="[
-        val => val !== null && val !== '' || 'Please type your confirm password',
-        val => val === password || 'Passwords doest not match',
-      ]" />
+  <q-page padding="">
+    <div class="q-pa-md shadow-1">
+      <h1 class="text-h4 text-center">Registrar</h1>
+      <q-form @submit.prevent="onSubmit" class="q-gutter-md">
+        <q-input outlined="" v-model="name" label="Seu nome*" lazy-rules :rules="[
+          val => val !== null && val !== '' || 'Por favor digite seu nome',
+        ]" />
+        <q-input outlined="" v-model="username" label="Seu email *" lazy-rules :rules="[
+          val => val !== null && val !== '' || 'Por favor digite seu email',
+        ]" />
+        <q-input outlined="" v-model="password" type="password" label="Sua senha *" lazy-rules :rules="[
+          val => val !== null && val !== '' || 'Por favor digite sua senha',
+        ]" />
+        <q-input outlined="" v-model="confirmPassword" type="password" label="Confirme sua senha*" lazy-rules :rules="[
+          val => val !== null && val !== '' || 'Por favor confirme sua senha',
+          val => val === password || 'Passwords doest not match',
+        ]" />
 
-      <div>
-        <q-btn label="Submit" type="submit" color="primary" />
-      </div>
-    </q-form>
-  </div>
+        <div class="flex flex-center">
+          <q-btn label="Enviar" type="submit" color="primary" />
+        </div>
+      </q-form>
+    </div>
+  </q-page>
 </template>
 
 <script setup>

@@ -12,7 +12,7 @@ export const authUserService = async (data:authUserPayload)=> {
     localStorage.setItem('token', response?.data?.token)
 
     Notify.create({
-      message: 'Bem vindo!',
+      message: 'Bem-vindo!',
       icon: 'check',
       color: 'positive'
     })
