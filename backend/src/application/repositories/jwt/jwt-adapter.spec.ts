@@ -27,7 +27,7 @@ describe('Jwt Adapter', () => {
       const signSpy = vi.spyOn(jwt, 'sign')
       await sut.encrypt('any_id')
       expect(signSpy).toHaveBeenCalledWith({}, 'secret', {
-        expiresIn: '1h',
+        expiresIn: '7d',
         subject: 'any_id',
       })
     })
