@@ -1,9 +1,10 @@
 import { api } from 'src/boot/axios'
-import { dateToAmerican } from 'src/helpers/formatt-date'
+import { dateToAmerican } from 'src/helpers/format-date'
+import { formatCurrency } from 'src/helpers/format-price'
 
 export interface Expense {
   id: string
-  cost: number
+  cost: string
   createdAt: Date | string
   description: string
   payer: {
@@ -30,6 +31,7 @@ export function useExpenseApi () {
     return response.data.expenses.map(expense => {
       if (expense) {
         expense.createdAt = dateToAmerican(new Date(expense.createdAt))
+        expense.cost = formatCurrency(Number(expense.cost))
       }
       return expense
     })
