@@ -49,6 +49,11 @@ async function onSubmit() {
   try {
     if (form.value.id) {
       await updateExpense(form.value.id, form.value)
+      $q.notify({
+        message: 'Despesa alterada com sucesso',
+        icon: 'check',
+        color: 'positive'
+      })
     } else {
       await addExpense(form.value)
       $q.notify({

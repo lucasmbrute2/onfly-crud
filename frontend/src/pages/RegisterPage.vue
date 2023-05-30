@@ -32,7 +32,7 @@ import { useUserApi } from '../services/user'
 import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar'
 
-const { addUser } = useUserApi()
+const { addUser, authUser } = useUserApi()
 const $q = useQuasar()
 const router = useRouter()
 const registerForm = reactive({
@@ -44,11 +44,16 @@ const registerForm = reactive({
 
 async function onSubmit() {
   try {
+    const { confirmPassword, name, password, username } = registerForm
     await addUser({
-      name: registerForm.name,
-      username: registerForm.username,
-      password: registerForm.password,
-      confirmPassword: registerForm.confirmPassword
+      name,
+      username,
+      password,
+      confirmPassword
+    })
+    await authUser({
+      username,
+      password
     })
     $q.notify({
       message: 'Bem-vindo',
