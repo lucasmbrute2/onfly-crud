@@ -15,7 +15,7 @@
         <q-input outlined="" v-model="registerForm.confirmPassword" type="password" label="Confirme sua senha *"
           lazy-rules :rules="[
             val => val !== null && val !== '' || 'Por favor confirme sua senha',
-            val => val === password || 'As senhas precisam ser iguais',
+            val => val !== password || 'As senhas precisam ser iguais',
           ]" />
 
         <div class="flex flex-center">
@@ -59,7 +59,7 @@ async function onSubmit() {
   } catch (error) {
     console.error(error)
     $q.notify({
-      message: 'Credenciais inválidas',
+      message: 'Credenciais inválidas, verifique se sua senha senha é maior que 6 caracteres e seu e-mail é válido',
       color: 'red',
     })
   }
