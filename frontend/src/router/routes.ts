@@ -9,7 +9,7 @@ const routes: RouteRecordRaw[] = [
       { path: '', name: 'home', component: () => import('pages/IndexPage.vue') },
       { path: '/login', name: 'login', component: () => import('src/pages/LoginPage.vue')},
       { path: '/register', name: 'register', component: () => import('pages/RegisterPage.vue')},
-      { path: '/form-expense/:expenseId?', name: 'addExpenseForm', component: () => import('pages/AddExpenseForm.vue')},
+      { path: '/form-expense/:expenseId?', name: 'expenseForm', component: () => import('src/pages/ExpenseForm.vue')},
       { path: '/logout', name: 'logout', component: () => import('pages/ExitPage.vue')}
     ]
   },

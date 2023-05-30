@@ -1,24 +1,25 @@
 <template>
   <q-page padding="">
-    <div class="q-pa-md shadow-1">
-      <h1 class="text-h4 text-center">Registrar</h1>
+    <div class="q-pa-md shadow-1" style="max-width: 500px; margin: 0 auto;">
+      <h1 class="text-h4 q-pb-md text-center">Registrar</h1>
       <q-form @submit.prevent="onSubmit" class="q-gutter-md">
-        <q-input outlined="" v-model="name" label="Seu nome*" lazy-rules :rules="[
+        <q-input outlined="" v-model="registerForm.name" label="Seu nome *" lazy-rules :rules="[
           val => val !== null && val !== '' || 'Por favor digite seu nome',
         ]" />
-        <q-input outlined="" v-model="username" label="Seu email *" lazy-rules :rules="[
+        <q-input outlined="" v-model="registerForm.username" label="Seu email *" lazy-rules :rules="[
           val => val !== null && val !== '' || 'Por favor digite seu email',
         ]" />
-        <q-input outlined="" v-model="password" type="password" label="Sua senha *" lazy-rules :rules="[
+        <q-input outlined="" v-model="registerForm.password" type="password" label="Sua senha *" lazy-rules :rules="[
           val => val !== null && val !== '' || 'Por favor digite sua senha',
         ]" />
-        <q-input outlined="" v-model="confirmPassword" type="password" label="Confirme sua senha*" lazy-rules :rules="[
-          val => val !== null && val !== '' || 'Por favor confirme sua senha',
-          val => val === password || 'Passwords doest not match',
-        ]" />
+        <q-input outlined="" v-model="registerForm.confirmPassword" type="password" label="Confirme sua senha *"
+          lazy-rules :rules="[
+            val => val !== null && val !== '' || 'Por favor confirme sua senha',
+            val => val === password || 'As senhas precisam ser iguais',
+          ]" />
 
         <div class="flex flex-center">
-          <q-btn label="Enviar" type="submit" color="primary" />
+          <q-btn label="Enviar" size="md" type="submit" color="primary" />
         </div>
       </q-form>
     </div>
@@ -26,25 +27,42 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { addUserService } from '../services/add-user-service'
+import { reactive } from 'vue'
+import { useUserApi } from '../services/user'
 import { useRouter } from 'vue-router';
+import { useQuasar } from 'quasar'
+
+const { addUser } = useUserApi()
+const $q = useQuasar()
 const router = useRouter()
-
-const name = ref(null)
-const username = ref(null)
-const password = ref(null)
-const confirmPassword = ref(null)
-
+const registerForm = reactive({
+  name: '',
+  username: '',
+  password: '',
+  confirmPassword: ''
+})
 
 async function onSubmit() {
-  await addUserService({
-    name: name.value,
-    username: username.value,
-    password: password.value,
-    confirmPassword: confirmPassword.value
-  })
-  router.push('/')
+  try {
+    await addUser({
+      name: registerForm.name,
+      username: registerForm.username,
+      password: registerForm.password,
+      confirmPassword: registerForm.confirmPassword
+    })
+    $q.notify({
+      message: 'Bem-vindo',
+      color: 'positive',
+      icon: 'check'
+    })
+    router.push('/')
+  } catch (error) {
+    console.error(error)
+    $q.notify({
+      message: 'Credenciais inválidas',
+      color: 'red',
+    })
+  }
 }
 
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <q-page padding="">
+  <q-page padding>
     <h1 class="text-h4 flex flex-center">{{ title }}</h1>
 
     <q-form @submit.prevent="onSubmit" class="row q-col-gutter-sm">
@@ -10,9 +10,9 @@
       <q-input outlined v-model="form.cost" type="number" label="Valor *" lazy-rules :rules="[
         val => val && val.length > 0 || 'Campo obrigatório']" />
 
-      <div class="col-12 q-gutter-sm">
-        <q-btn label="Salvar" type="submit" color="primary" class="float-right" icon="save" />
-        <q-btn label="Cancelar" :to="{ name: 'home' }" color="white" class="float-right" text-color="primary" />
+      <div class="col-12 q-gutter-sm flex flex-center">
+        <q-btn label="Cancelar" :to="{ name: 'home' }" color="white" text-color="primary" />
+        <q-btn label="Salvar" type="submit" color="primary" icon="save" />
       </div>
     </q-form>
   </q-page>
@@ -20,11 +20,11 @@
 
 <script setup>
 import { onMounted, ref } from 'vue'
-import { addExpense } from '../services/add-expense-service'
 import { useQuasar } from 'quasar';
 import { useRoute, useRouter } from 'vue-router';
-import { findExpense, updateExpense } from '../services'
+import { useExpenseApi } from '../services/expenses'
 
+const { findExpense, updateExpense, addExpense } = useExpenseApi()
 const route = useRoute()
 const router = useRouter()
 const $q = useQuasar()
@@ -48,7 +48,6 @@ onMounted(async () => {
 async function onSubmit() {
   try {
     if (form.value.id) {
-      console.log(form.value.id)
       await updateExpense(form.value.id, form.value)
     } else {
       await addExpense(form.value)
@@ -58,12 +57,14 @@ async function onSubmit() {
         color: 'positive'
       })
     }
-
     router.push({
       name: 'home'
     })
   } catch (error) {
-    console.error()
+    $q.notify({
+      message: 'Erro ao cadastrar despesa',
+      color: 'red'
+    })
   }
 }
 </script>

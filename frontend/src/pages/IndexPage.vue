@@ -6,7 +6,7 @@
           Despesas
         </h1>
         <q-space />
-        <q-btn color="primary" label="Novo" :to="{ name: 'addExpenseForm' }" />
+        <q-btn color="primary" label="Novo" :to="{ name: 'expenseForm' }" />
       </template>
 
       <template v-slot:body-cell-actions="props">
@@ -20,13 +20,12 @@
 </template>
 
 <script setup lang="ts">
-import { fetchExpenses } from 'src/services/fetch-all-expenses-service';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { deleteExpense } from '../services/delete-expense'
-import { Expense } from '../services/fetch-all-expenses-service'
 import { useQuasar } from 'quasar'
+import { Expense, useExpenseApi } from 'src/services/expenses';
 
+const { getExpenses, deleteExpense } = useExpenseApi()
 const $q = useQuasar()
 const router = useRouter()
 const columns = [
@@ -37,13 +36,14 @@ const columns = [
 ]
 const rows = ref<Expense[]>([])
 
-async function getExpenses() {
-  const response = await fetchExpenses()
+
+async function handleGetExpenses() {
+  const response = await getExpenses()
   rows.value = response as Expense[]
 }
 
 onMounted(async () => {
-  await getExpenses()
+  await handleGetExpenses()
 })
 
 async function handleDeleteExpense(expenseId: string) {
@@ -59,13 +59,13 @@ async function handleDeleteExpense(expenseId: string) {
       icon: 'check',
       color: 'positive'
     })
-    await getExpenses()
+    await handleGetExpenses()
   })
 }
 
 async function handleEditExpense(expenseId: string) {
   router.push({
-    name: 'addExpenseForm',
+    name: 'expenseForm',
     params: { expenseId }
   })
 }
