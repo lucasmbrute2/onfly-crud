@@ -69,7 +69,6 @@ async function handleEditExpense(expenseId: string) {
     params: { expenseId }
   })
 }
-
 </script>
 
 <style lang="sass" scoped>
