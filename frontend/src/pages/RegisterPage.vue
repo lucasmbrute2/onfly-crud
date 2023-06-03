@@ -64,7 +64,7 @@ async function onSubmit() {
   } catch (error) {
     console.error(error)
     $q.notify({
-      message: 'Credenciais inválidas, verifique se sua senha senha é maior que 6 caracteres e seu e-mail é válido',
+      message: '"Credenciais inválidas. Verifique se sua senha é maior que 6 caracteres e se seu e-mail é válido."',
       color: 'red',
     })
   }

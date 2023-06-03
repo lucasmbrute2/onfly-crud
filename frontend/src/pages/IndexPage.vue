@@ -43,7 +43,7 @@ async function handleGetExpenses() {
     rows.value = response as Expense[]
   } catch (error) {
     $q.notify({
-      message: 'Não conseguimos buscar suas despsas, tente novamente mais tarde.',
+      message: 'Não conseguimos buscar suas despesas, tente novamente mais tarde.',
       color: 'red'
     })
   }
