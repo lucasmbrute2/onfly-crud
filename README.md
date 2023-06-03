@@ -20,7 +20,7 @@ npm run test:unit
 - Crie um arquivo .env dentro da pastas 'backend', no front não irá precisar.
 - Abra o Docker
 - Navegue até a pasta backend, e com as variáveis de ambiente devidamente preenchidas rode o comando "docker-compose up -d"
-- Rode o comando 'npm run start:dev'
+- Rode o comando 'npx prisma migrate dev' e depois 'npm run start:dev'
 - Navegue até a pasta frontend, e com as variáveis de ambiente devidamente preenchidas rode o comando 'npm run dev'
 ```
 
