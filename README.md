@@ -1,7 +1,7 @@
 # Boas vindas a bordo do Onfly Expenses!
 ### Aqui você irá encontrar um CRUD de despesas e autenticação de usuários
 
-O projeto está em Nodejs com alguns conceitos de arquitetura em camadas, mas não segue a Clean Architecture a risca, o Controller está acoplado ao express.
+O projeto está em Nodejs com alguns conceitos de arquitetura em camadas.
  Aqui está um projeto em  [Clean Arch](https://github.com/lucasmbrute2/fs-challenge) como exemplo.
  
  O frontend está em VueJS com o framework Quasar.
